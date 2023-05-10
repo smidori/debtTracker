@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Add new transaction</ion-title>
+    <ion-icon name="close" slot="end" size="large" class="ion-padding" (click)="dismiss()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+   <ion-card>
+    <ion-item>
+      <ion-textarea [(ngModel)]="description" placeholder="Type your description here"> </ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Type</ion-label>
+      <ion-select [(ngModel)]="type">
+        <ion-select-option value="Borrow">Borrow</ion-select-option>
+        <ion-select-option value="Lend">Lend</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-textarea [(ngModel)]="amount" type="number" placeholder="Amount" ></ion-textarea>
+    </ion-item>
+    <ion-button class="ion-margin" expand="block" (click)="addTransaction()">Add Transaction</ion-button>
+
+   </ion-card>
+</ion-content>
