@@ -18,44 +18,51 @@ export class HomePage {
   personName: string = "";
   today: number = Date.now();
 
-  constructor(public modalCtrl: ModalController, 
-    public service: DebtTrackerService, 
+  constructor(public modalCtrl: ModalController,
+    public service: DebtTrackerService,
     public navCtrl: NavController,
-    private alertController: AlertController) {    
+    private alertController: AlertController) {
   }
 
   ionViewWillEnter() {//will execute everytime before open the page
     this.getAllPersons() // to refresh the information in the screen
-   }
-
-  ngOnInit() {
-    //this.getAllPersons()
   }
 
+  //add the person
   async addPerson() {
     if (this.personName.length > 0) {
-      let p = new Person();      
+      //create person
+      let p = new Person();
       p.id = Date.now();
       p.name = this.personName;
       p.total = 0;
       p.transactions = [];
+
+      //save in the storage
       await this.service.addPerson(p.id + "", p);
       this.personName = "";
     }
     this.getAllPersons();//to refresh the list
   }
 
- 
-  getAllPersons() {
-    this.people = this.service.getPersons();
+  //get all people from storage
+  async getAllPersons() {
+    await this.service.getPersons()
+      .then((people) => {
+        this.people = people;
+        console.log(this.people);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
-
+  //show the alert screen to confirm to delete the person
   async deletePerson(name, id) {
 
     const alert = await this.alertController.create({
       header: 'Confirmation',
-      message: 'Are you sure you want to delete: ' + name +" ?",
+      message: 'Are you sure you want to delete: ' + name + " ?",
       buttons: [
         {
           text: 'No',
@@ -67,8 +74,9 @@ export class HomePage {
         }, {
           text: 'Yes',
           handler: () => {
-             this.service.deletePerson(id);
-             this.getAllPersons(); //to refresh the list
+            //delete from storage and refresh the data in the screen
+            this.service.deletePerson(id);
+            this.getAllPersons(); //to refresh the list
           }
         }
       ]
@@ -76,42 +84,10 @@ export class HomePage {
     await alert.present();
   }
 
- /*
-deletePerson(id: number) {
-this.service.deletePerson(id);
-    this.getAllPersons(); //to refresh the list
-
-}
-
-  async goDetails(id: number) {
-    const modal = await this.modalCtrl.create({
-      component: DetailPage
-    })
-
-    this.personId = this.people[id];
-
-    await modal.present();
-  }
-
- 
-  async updateDetails(selectedPerson) {
-    const modal = await this.modalCtrl.create({
-      component: UpdateDetailsPage,
-      componentProps: {personSelected: selectedPerson}
-    })
-    console.log("send ud" + selectedPerson) 
-    console.log("--> " + selectedPerson.value.name) 
-    await await modal.present();
-  }
-*/
-
-
- 
-
+  //go to the screen to show the transactions created
   async updateDetails(id) {
     console.log("idparam = " + id)
     this.navCtrl.navigateForward(`/update-details/${id}`);
-    
   }
 
 

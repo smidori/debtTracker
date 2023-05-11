@@ -6,38 +6,37 @@ import { Storage } from '@ionic/storage-angular';
 })
 export class DebtTrackerService {
 
+  //use the ionic storage to save the data
   constructor(private storage: Storage) {
+    //create the storage
     this.init()
   }
 
-  addPerson(key, value) {
-    this.storage.set(key, value);
+  //save the person and transactions relate to them
+  async addPerson(key, value) {
+    await this.storage.set(key, value);
   }
 
-  getPersons() {
+  //get the people saved and their transactions
+  async getPersons() {
     let people: any = []
-    this.storage.forEach((key, value, index) => {
+    await this.storage.forEach((key, value, index) => {
       people.push({ 'key': value, 'value': key })
     })
     return people
   }
 
-  deletePerson(key) {
-    this.storage.remove(key);
+  //delete the person and their transactions as well
+  async deletePerson(key) {
+    await this.storage.remove(key);
   }
 
-  updatePerson(key, newValue) {
-    this.storage.set(key, newValue);
+  //update the person (including transactions)
+  async updatePerson(key, newValue) {
+    await this.storage.set(key, newValue);
   }
 
-  /*
-  async getPerson(id) {
-    //const p = this.storage.get(id+"")
-    //console.log("getPerson => " + p );
-    return await this.storage.get(id+"")
-  }
-*/
-
+  //retrieve an specific person
   async getPerson(id): Promise<any> {
     try {
       const value = await this.storage.get(id);
@@ -48,10 +47,7 @@ export class DebtTrackerService {
     }
   }
 
-  getPerson2(id){
-    return this.storage.get(id);
-  }
-
+  //create the storage
   async init() {
     await this.storage.create()
   }
