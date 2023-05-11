@@ -25,7 +25,8 @@
       </ion-card-subtitle>
       <ion-item>
         <ion-icon size="small" name="logo-euro"></ion-icon>
-        <ion-label>{{trx.amount}}</ion-label>
+        <ion-label *ngIf="trx.type === 'Borrow' " color="danger">-{{trx.amount}}</ion-label>
+        <ion-label *ngIf="trx.type === 'Lend' " color="black">{{trx.amount}}</ion-label>
       </ion-item>
     </ion-card-header>
 

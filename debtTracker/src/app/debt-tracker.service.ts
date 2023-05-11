@@ -26,8 +26,8 @@ export class DebtTrackerService {
     this.storage.remove(key);
   }
 
-  updatePerson() {
-
+  updatePerson(key, newValue) {
+    this.storage.set(key, newValue);
   }
 
   /*

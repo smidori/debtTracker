@@ -20,6 +20,9 @@ export class HomePage {
   today: number = Date.now();
 
   constructor(public modalCtrl: ModalController, public service: DebtTrackerService, public navCtrl: NavController) {
+    
+  }
+  ngOnInit() {
     this.getAllPersons()
   }
 
@@ -76,6 +79,7 @@ export class HomePage {
   async updateDetails(id) {
     console.log("idparam = " + id)
     this.navCtrl.navigateForward(`/update-details/${id}`);
+    
   }
 
 

@@ -16,8 +16,8 @@ export class Person {
     }
     */
 
-    addTransaction(type: string, description: string, amount: number, status: string){
-        let transaction = new Transaction(type,description,amount,status);
+    addTransaction(id: number, type: string, description: string, amount: number, status: string){
+        let transaction = new Transaction(id, type,description,amount,status);
         this.transactions.push(transaction);
     }
 }

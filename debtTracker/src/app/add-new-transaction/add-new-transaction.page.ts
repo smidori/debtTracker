@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DebtTrackerService } from '../debt-tracker.service';
+import { Transaction } from '../transaction';
 
 @Component({
   selector: 'app-add-new-transaction',
@@ -11,41 +12,45 @@ export class AddNewTransactionPage implements OnInit {
 
   type
   description
-  amount
-  transactionObj
+  amount : number
+  transactionObj : Transaction
   status: string = 'open'; //payed and open
-  
 
-  /*
-    type: string ='aaa'; 
-    amount: number = 1; 
-    status: string = 'open'; //payed and open
-    description: string = 'my desc';
-    transactionObj: any = [];
- */
-  constructor(public modalCtrl:ModalController, public service: DebtTrackerService) { }
+
+  constructor(public modalCtrl: ModalController, public service: DebtTrackerService) { }
 
   ngOnInit() {
+    this.description = 'aa' + Date.now()
+    this.amount = 1
+    this.status = 'open'
+    this.type = 'Borrow'
+
   }
 
-  async addTransaction(){
-    this.transactionObj = ({description:this.description,
-                            amount:this.amount,
-                            status:this.status,
-                            type:this.type})
+  async addTransaction() {
+    /*
+    this.transactionObj = ({
+      description: this.description,
+      amount: this.amount,
+      status: this.status,
+      type: this.type
+    })
     let uid = Date.now();
-    if(uid){
-      await this.service.addPerson(uid,  this.transactionObj);
-    }else{
-      console.log("can't sabe a empty task")
-    }
+    */
+   /*
+    this.transactionObj.description = this.description
+    this.transactionObj.amount = this.amount
+    this.transactionObj.status = this.status
+    this.transactionObj.type = this.type
+    this.transactionObj.id = Date.now();
+    */
     
+    this.transactionObj = new Transaction(Date.now(),  this.type, this.description, this.amount, this.status);
     this.dismiss();
   }
 
-  async dismiss(){
+  async dismiss() {
     await this.modalCtrl.dismiss(this.transactionObj);
-    
   }
 
 }
