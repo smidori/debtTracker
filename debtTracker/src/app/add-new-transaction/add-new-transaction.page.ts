@@ -14,27 +14,20 @@ export class AddNewTransactionPage implements OnInit {
   description
   amount: number
   transactionObj: Transaction
-  status: string = 'open'; //payed and open
   dateTrx
 
 
   constructor(public modalCtrl: ModalController, public service: DebtTrackerService) { }
 
+  //start the form with default values for some field
   ngOnInit() {
-    this.description = 'aa' + Date.now()
-    this.amount = 1
-    this.status = 'open'
     this.type = 'Borrow'
     this.dateTrx = this.convertDate() //default value
-
   }
 
+  //send transaction to the page details
   async addTransaction() {
-
-    console.log("date=> " + this.dateTrx);
-    this.transactionObj = new Transaction(Date.now(), this.type, this.description, this.amount, this.status, this.dateTrx);
-    console.log("send trx => " + JSON.stringify(this.transactionObj));
-
+    this.transactionObj = new Transaction(Date.now(), this.type, this.description, this.amount, this.dateTrx);
     this.dismiss();
   }
 

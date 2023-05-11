@@ -22,7 +22,7 @@
             </ion-item>
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            <ion-button style="vertical-align: bottom;" (click)="addPerson()" color="success" fill="solid"
+            <ion-button style="vertical-align: bottom;" (click)="addPerson()" color="dark" fill="solid"
               [disabled]="personName.length == 0">
               <ion-icon slot="start" name="add-outline"></ion-icon>
               <p style="font-weight: 100; font-size: 0.7em;">Add</p>
@@ -52,13 +52,13 @@
       </ion-row>
 
       <ion-row>
-        <ion-button (click)="updateDetails(person.key)" fill="clear">
+        <ion-button color="primary" (click)="updateDetails(person.key)" fill="clear">
           <ion-icon slot="start" name="create-outline"></ion-icon>
-          <p style="font-weight: 100; font-size: 0.7em;">Update</p>
+          <p style="font-weight: 700; font-size: 0.7em;">Update</p>
         </ion-button>
-        <ion-button color="danger" (click)="deletePerson(person.value.name, person.key)" fill="clear">
+        <ion-button color="primary" (click)="deletePerson(person.value.name, person.key)" fill="clear">
           <ion-icon slot="start" name="trash-outline"></ion-icon>
-          <p style="font-weight: 100; font-size: 0.7em;">Delete</p>
+          <p style="font-weight: 700; font-size: 0.7em;">Delete</p>
         </ion-button>
       </ion-row>
     </ion-grid>

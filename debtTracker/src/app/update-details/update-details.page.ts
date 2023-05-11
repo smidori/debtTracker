@@ -15,16 +15,16 @@ import { AlertController } from '@ionic/angular';
 })
 export class UpdateDetailsPage implements OnInit {
 
-  @Input() personSelected;
+  @Input() personSelected; //value will be set ngOnInit
   person: Person = new Person();
-  transactions :Transaction[] = [];
+  transactions: Transaction[] = [];
 
-  constructor(public modalCtrl: ModalController, 
-    public service: DebtTrackerService, 
-    private route: ActivatedRoute, 
+  constructor(public modalCtrl: ModalController,
+    public service: DebtTrackerService,
+    private route: ActivatedRoute,
     private alertController: AlertController) { }
 
-
+  //load the pre load the data 
   ngOnInit() {
 
     this.route.paramMap.subscribe(params => {
@@ -32,54 +32,50 @@ export class UpdateDetailsPage implements OnInit {
 
       this.service.getPerson(id).then(value => {
         this.personSelected = value;
-        console.log("value ====> " + JSON.stringify(this.personSelected));
-        //console.log("value ====> " + this.personSelected)
         this.person.id = this.personSelected.id;
         this.person.name = this.personSelected.name;
         this.person.total = this.personSelected.total;
-        //this.person.transactions = this.personSelected.transactions;
+
         this.transactions = this.personSelected.transactions;
-        console.log("trx length ??????" + this.transactions.length)
       })
         .catch(error => {
           console.error('Error:', error);
         });
-      
+
     });
 
   }
-
-  async addTransaction(){
+  //add new transaction
+  async addTransaction() {
     const modal = await this.modalCtrl.create({
-      component:AddNewTransactionPage
+      component: AddNewTransactionPage
     })
-    modal.onDidDismiss().then((newTrxObj)=> {
+    modal.onDidDismiss().then((newTrxObj) => {
       let obj = newTrxObj.data;
-      let transaction : Transaction = new Transaction(obj.id, obj.type, obj.description, obj.amount, obj.status, obj.dateTrx)
+      let transaction: Transaction = new Transaction(obj.id, obj.type, obj.description, obj.amount, obj.dateTrx)
       this.transactions.push(transaction)
-      
-      console.log("save trx => " +JSON.stringify(transaction));
-
-      let valueTrx : number = transaction.amount; 
-      if(transaction.type == 'Borrow'){
+      //recalculate the value
+      let valueTrx: number = transaction.amount;
+      if (transaction.type == 'Borrow') {
         valueTrx = (valueTrx * -1);
       }
- 
-      this.person.total = Number(this.person.total) + Number(valueTrx)
+      //update the value and the transactions
+      let value = Number(this.person.total) + Number(valueTrx)
+      this.person.total = Number(Number(value).toFixed(2))
       this.person.transactions = this.transactions;
-      
+
       //save person
       this.service.updatePerson(this.person.id, this.person)
     })
-     await modal.present()
+    await modal.present()
   }
 
- 
 
+  //show the alert to confirm to delete the transaction
   async deleteTrxAlert(desc, index, amount, type) {
     const alert = await this.alertController.create({
       header: 'Confirmation',
-      message: 'Are you sure you want to delete: ' + desc +" ?",
+      message: 'Are you sure you want to delete: ' + desc + " ?",
       buttons: [
         {
           text: 'No',
@@ -100,23 +96,25 @@ export class UpdateDetailsPage implements OnInit {
   }
 
 
-  deleteTrx(index, amount, type){
+  //delete transaction
+  deleteTrx(index, amount, type) {
+    //recalculate the value
     let trxValue = Number(amount);
-    if(type === 'Borrow'){
+    if (type === 'Borrow') {
       trxValue = amount * -1;
     }
-    
+
     //remove item from transactions
-    this.transactions.splice(index,1); 
+    this.transactions.splice(index, 1);
 
     //update info in person
-    this.person.total = Number(this.person.total) - trxValue
+    let value = Number(this.person.total) - Number(trxValue)
+    this.person.total = Number(value.toFixed(2));
     this.person.transactions = this.transactions;
 
     //save person
     this.service.updatePerson(this.person.id, this.person)
-
   }
-  
+
 }
 
