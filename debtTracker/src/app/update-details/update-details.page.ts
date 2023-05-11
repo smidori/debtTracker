@@ -6,8 +6,7 @@ import { Person } from '../person';
 import { ActivatedRoute } from "@angular/router";
 import { AddNewTransactionPage } from '../add-new-transaction/add-new-transaction.page';
 import { Transaction } from '../transaction';
-import { Router } from '@angular/router';
-
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-update-details',
@@ -20,8 +19,10 @@ export class UpdateDetailsPage implements OnInit {
   person: Person = new Person();
   transactions :Transaction[] = [];
 
-  constructor(public modalCtrl: ModalController, public service: DebtTrackerService, 
-    private route: ActivatedRoute, private router: Router) { }
+  constructor(public modalCtrl: ModalController, 
+    public service: DebtTrackerService, 
+    private route: ActivatedRoute, 
+    private alertController: AlertController) { }
 
 
   ngOnInit() {
@@ -73,10 +74,49 @@ export class UpdateDetailsPage implements OnInit {
      await modal.present()
   }
 
-  goBackToHome(){
-    //this.homePage.getAllPersons();
-    this.router.navigateByUrl('/home');
+ 
+
+  async deleteTrxAlert(desc, index, amount, type) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Are you sure you want to delete: ' + desc +" ?",
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            //do nothing
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            this.deleteTrx(index, amount, type);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
+
+  deleteTrx(index, amount, type){
+    let trxValue = Number(amount);
+    if(type === 'Borrow'){
+      trxValue = amount * -1;
+    }
+    
+    //remove item from transactions
+    this.transactions.splice(index,1); 
+
+    //update info in person
+    this.person.total = Number(this.person.total) - trxValue
+    this.person.transactions = this.transactions;
+
+    //save person
+    this.service.updatePerson(this.person.id, this.person)
+
+  }
   
 }
+

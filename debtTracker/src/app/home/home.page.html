@@ -1,11 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary">
     <ion-title>
-      <ion-icon color="dark" size="large" name="person-add"></ion-icon>
-      <ion-icon color="light" size="large" name="wallet"></ion-icon>
-      <ion-icon color="danger" size="large" name="person-remove"></ion-icon>
-      <ion-label style="font-weight: 800; font-size: 2em;"> Debt Tracker</ion-label>
-        <p style="font-weight: 500; font-size: 0.6em; color: cornsilk;">{{today | date:'fullDate'}}</p>
+      <ion-row>
+        <ion-col size="2" class="ion-text-end"><ion-icon color="dark" size="large" name="person-add"></ion-icon></ion-col>
+        <ion-col size="8" class="ion-text-center ion-justify-content-center"><ion-label style="font-weight: 800; font-size: 1.3em;"> Debt Tracker</ion-label></ion-col>
+        <ion-col size="2" class="ion-text-start"><ion-icon color="danger" size="large" name="person-remove"></ion-icon></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-end"><p style="font-weight: 500; font-size: 0.6em; color: cornsilk;">{{today | date:'fullDate'}}</p></ion-col>
+      </ion-row>
+      
+    
     </ion-title>
     <ion-card color="primary">
       <ion-item>
@@ -20,7 +25,7 @@
             <ion-button style="vertical-align: bottom;" (click)="addPerson()" color="success" fill="solid"
               [disabled]="personName.length == 0">
               <ion-icon slot="start" name="add-outline"></ion-icon>
-              <p style="font-weight: 100; font-size: 0.7em;">Add Person</p>
+              <p style="font-weight: 100; font-size: 0.7em;">Add</p>
             </ion-button>
           </ion-col>
         </ion-row>

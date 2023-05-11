@@ -1,14 +1,12 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="dark">
     <ion-title>Add new transaction</ion-title>
     <ion-icon name="close" slot="end" size="large" class="ion-padding" (click)="dismiss()"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="primary">
   <ion-card>
-
-
     <ion-radio-group style="padding-left: 10px;" [(ngModel)]="type">
       <ion-item>
         <ion-col>
@@ -35,7 +33,9 @@
 
     
     <ion-item>
-      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <!--
+      <ion-icon size="small" name="calendar-outline" slot="start"></ion-icon>
+      -->
       <ion-datetime-button   datetime="datetime" ></ion-datetime-button>
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
@@ -43,10 +43,8 @@
         </ng-template>
       </ion-modal>
     </ion-item> 
-    
 
-
-    <ion-button class="ion-margin" expand="block" (click)="addTransaction()">Add Transaction</ion-button>
+    <ion-button [disabled]="!amount || !description" class="ion-margin" expand="block" (click)="addTransaction()">Add Transaction</ion-button>
 
   </ion-card>
 </ion-content>
