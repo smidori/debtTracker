@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { Person } from '../person';
-import { Transaction } from '../transaction';
 import { ModalController } from '@ionic/angular';
 import { DebtTrackerService } from '../debt-tracker.service';
-import { UpdateDetailsPage } from '../update-details/update-details.page';
 
 import { NavController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -19,11 +18,18 @@ export class HomePage {
   personName: string = "";
   today: number = Date.now();
 
-  constructor(public modalCtrl: ModalController, public service: DebtTrackerService, public navCtrl: NavController) {
-    
+  constructor(public modalCtrl: ModalController, 
+    public service: DebtTrackerService, 
+    public navCtrl: NavController,
+    private alertController: AlertController) {    
   }
+
+  ionViewWillEnter() {//will execute everytime before open the page
+    this.getAllPersons() // to refresh the information in the screen
+   }
+
   ngOnInit() {
-    this.getAllPersons()
+    //this.getAllPersons()
   }
 
   async addPerson() {
@@ -45,12 +51,38 @@ export class HomePage {
   }
 
 
-  deletePerson(id: number) {
-    this.service.deletePerson(id);
-    this.getAllPersons(); //to refresh the list
+  async deletePerson(name, id) {
+
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Are you sure you want to delete: ' + name +" ?",
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            //do nothing
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+             this.service.deletePerson(id);
+             this.getAllPersons(); //to refresh the list
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
  /*
+deletePerson(id: number) {
+this.service.deletePerson(id);
+    this.getAllPersons(); //to refresh the list
+
+}
+
   async goDetails(id: number) {
     const modal = await this.modalCtrl.create({
       component: DetailPage
@@ -73,9 +105,7 @@ export class HomePage {
   }
 */
 
-ionViewWillEnter() {
-  this.getAllPersons() // to refresh the information in the screen
- }
+
  
 
   async updateDetails(id) {
