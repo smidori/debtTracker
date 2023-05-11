@@ -15,9 +15,11 @@ export class Person {
         this.id = Date.now();
     }
     */
-
+/*
     addTransaction(id: number, type: string, description: string, amount: number, status: string){
         let transaction = new Transaction(id, type,description,amount,status);
         this.transactions.push(transaction);
     }
+
+    */
 }

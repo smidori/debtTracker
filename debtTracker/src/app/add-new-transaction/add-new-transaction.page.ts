@@ -12,9 +12,10 @@ export class AddNewTransactionPage implements OnInit {
 
   type
   description
-  amount : number
-  transactionObj : Transaction
+  amount: number
+  transactionObj: Transaction
   status: string = 'open'; //payed and open
+  dateTrx
 
 
   constructor(public modalCtrl: ModalController, public service: DebtTrackerService) { }
@@ -24,33 +25,36 @@ export class AddNewTransactionPage implements OnInit {
     this.amount = 1
     this.status = 'open'
     this.type = 'Borrow'
+    this.dateTrx = this.convertDate() //default value
 
   }
 
   async addTransaction() {
-    /*
-    this.transactionObj = ({
-      description: this.description,
-      amount: this.amount,
-      status: this.status,
-      type: this.type
-    })
-    let uid = Date.now();
-    */
-   /*
-    this.transactionObj.description = this.description
-    this.transactionObj.amount = this.amount
-    this.transactionObj.status = this.status
-    this.transactionObj.type = this.type
-    this.transactionObj.id = Date.now();
-    */
-    
-    this.transactionObj = new Transaction(Date.now(),  this.type, this.description, this.amount, this.status);
+
+    console.log("date=> " + this.dateTrx);
+    this.transactionObj = new Transaction(Date.now(), this.type, this.description, this.amount, this.status, this.dateTrx);
+    console.log("send trx => " + JSON.stringify(this.transactionObj));
+
     this.dismiss();
   }
 
   async dismiss() {
     await this.modalCtrl.dismiss(this.transactionObj);
+  }
+
+  //get the current date/time in string format 'yyyy-MM-dd'T'HH:mm:ss'
+  private convertDate() {
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    return formattedDate
   }
 
 }

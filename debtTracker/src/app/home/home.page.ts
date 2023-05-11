@@ -39,10 +39,7 @@ export class HomePage {
     this.getAllPersons();//to refresh the list
   }
 
-  getTemp() {
-    console.log(this.service.getPersons())
-  }
-
+ 
   getAllPersons() {
     this.people = this.service.getPersons();
   }
@@ -75,6 +72,11 @@ export class HomePage {
     await await modal.present();
   }
 */
+
+ionViewWillEnter() {
+  this.getAllPersons() // to refresh the information in the screen
+ }
+ 
 
   async updateDetails(id) {
     console.log("idparam = " + id)

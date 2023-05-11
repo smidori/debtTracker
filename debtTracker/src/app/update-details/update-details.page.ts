@@ -54,8 +54,10 @@ export class UpdateDetailsPage implements OnInit {
     })
     modal.onDidDismiss().then((newTrxObj)=> {
       let obj = newTrxObj.data;
-      let transaction : Transaction = new Transaction(obj.id, obj.type, obj.description, obj.amount, obj.status)
+      let transaction : Transaction = new Transaction(obj.id, obj.type, obj.description, obj.amount, obj.status, obj.dateTrx)
       this.transactions.push(transaction)
+      
+      console.log("save trx => " +JSON.stringify(transaction));
 
       let valueTrx : number = transaction.amount; 
       if(transaction.type == 'Borrow'){

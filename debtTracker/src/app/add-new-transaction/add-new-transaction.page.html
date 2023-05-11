@@ -5,24 +5,48 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
-   <ion-card>
-    <ion-item>
-      <ion-textarea [(ngModel)]="description" placeholder="Type your description here"> </ion-textarea>
-    </ion-item>
+<ion-content>
+  <ion-card>
+
+
+    <ion-radio-group style="padding-left: 10px;" [(ngModel)]="type">
+      <ion-item>
+        <ion-col>
+          <ion-radio value="Borrow" color="danger">Borrow</ion-radio>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col>
+          <ion-radio value="Lend" color="success">Lend</ion-radio>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
+      </ion-item>
+    </ion-radio-group>
 
     <ion-item>
-      <ion-label>Type</ion-label>
-      <ion-select [(ngModel)]="type">
-        <ion-select-option value="Borrow">Borrow</ion-select-option>
-        <ion-select-option value="Lend">Lend</ion-select-option>
-      </ion-select>
+      <ion-input label="Amount:" [(ngModel)]="amount" inputmode="decimal" type="number"
+        labelPlacement="floating"></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-textarea [(ngModel)]="amount" type="number" placeholder="Amount" ></ion-textarea>
+    <ion-item lines="none">
+      <ion-input label="Description:" [(ngModel)]="description" [counter]="true" maxlength="25"
+        labelPlacement="floating"> </ion-input>
     </ion-item>
+
+    
+    <ion-item>
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-datetime-button   datetime="datetime" ></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime [(ngModel)]="dateTrx" id="datetime"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item> 
+    
+
+
     <ion-button class="ion-margin" expand="block" (click)="addTransaction()">Add Transaction</ion-button>
 
-   </ion-card>
+  </ion-card>
 </ion-content>
